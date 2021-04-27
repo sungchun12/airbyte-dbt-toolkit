@@ -21,8 +21,6 @@ gcloud iam service-accounts create packer \
   --description="Packer Service Account" \
   --display-name="Packer Service Account"
 
-# download service account json file to local directory
-
 # assign compute admin permissions
 gcloud projects add-iam-policy-binding $YOUR_GCP_PROJECT \
     --member=serviceAccount:packer@$YOUR_GCP_PROJECT.iam.gserviceaccount.com \
@@ -62,12 +60,14 @@ export GOOGLE_APPLICATION_CREDENTIALS="../service_account.json"
 # build the image and have Google Cloud store it under Compute Engine "Images"
 packer build airbyte_gce_image.pkr.hcl
 
-# Test launching the image with the packer image id
+# test launching the image with the packer image id
 gcloud compute instances create $INSTANCE_NAME \
     --project $YOUR_GCP_PROJECT \
     --image="packer-1619555494" \
-    --zone $YOUR_GCP_ZONE
+    --zone $YOUR_GCP_ZONE \
+    --service-account=packer@$YOUR_GCP_PROJECT.iam.gserviceaccount.com
 
+# delete after your test is complete
 gcloud compute instances delete $INSTANCE_NAME \
   --project $YOUR_GCP_PROJECT \
   --zone $YOUR_GCP_ZONE

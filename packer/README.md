@@ -63,7 +63,7 @@ packer build airbyte_gce_image.pkr.hcl
 # test launching the image with the packer image id
 gcloud compute instances create $INSTANCE_NAME \
     --project $YOUR_GCP_PROJECT \
-    --image="packer-1619555494" \
+    --image="packer-1619640073" \
     --zone $YOUR_GCP_ZONE \
     --service-account=packer@$YOUR_GCP_PROJECT.iam.gserviceaccount.com
 
@@ -133,13 +133,19 @@ mkdir airbyte && cd airbyte
 wget https://raw.githubusercontent.com/airbytehq/airbyte/master/{.env,docker-compose.yaml}
 sudo docker-compose up -d
 
-# In your workstation terminal
+# Run the airbyte webserver locally on your workstation through an ssh tunnel
 gcloud --project=$YOUR_GCP_PROJECT beta compute ssh $INSTANCE_NAME \
     --zone $YOUR_GCP_ZONE \
     -- -L 8000:localhost:8000 -L 8001:localhost:8001 -N -f
 
 # In your local workstation browser
 http://localhost:8000
+
+
+# delete after your test is complete
+gcloud compute instances delete $INSTANCE_NAME \
+  --project $YOUR_GCP_PROJECT \
+  --zone $YOUR_GCP_ZONE
 
 ```
 

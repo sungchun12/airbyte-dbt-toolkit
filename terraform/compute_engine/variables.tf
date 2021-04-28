@@ -12,7 +12,7 @@ variable "subnetwork_id" {
   type        = string
 }
 
-variable "bastion_host_email" {
+variable "service_account_email" {
   description = "Service account email with cloud composer permissions"
   type        = string
 }
@@ -25,13 +25,13 @@ variable "bastion_host_email" {
 variable "name" {
   description = "compute engine instance name"
   type        = string
-  default     = "bastion-host-to-composer"
+  default     = "airbyte-demo"
 }
 
 variable "machine_type" {
   description = "compute engine machine type"
   type        = string
-  default     = "n1-standard-1"
+  default     = "n1-standard-2"
 }
 
 variable "zone" {
@@ -49,7 +49,7 @@ variable "tags" {
 variable "image" {
   description = "OS image for compute engine instance"
   type        = string
-  default     = "debian-cloud/debian-9"
+  default     = "packer-1619640073"
 }
 
 
@@ -72,7 +72,7 @@ variable "metadata" {
 variable "metadata_startup_script" {
   description = "Metadata startup script after the instance is setup"
   type        = string
-  default     = "echo hi > /test.txt"
+  default     = "airbyte_deploy.sh"
 }
 
 variable "scopes" {

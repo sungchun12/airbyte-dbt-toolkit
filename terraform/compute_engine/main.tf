@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 # Minimal Setup
-resource "google_compute_instance" "bastion-host-to-composer" {
+resource "google_compute_instance" "airbyte-demo" {
   project      = var.project
   name         = var.name
   machine_type = var.machine_type
@@ -39,10 +39,12 @@ resource "google_compute_instance" "bastion-host-to-composer" {
 
   metadata = var.metadata
 
-  metadata_startup_script = var.metadata_startup_script
+  metadata_startup_script = <<SCRIPT
+  ${file("${path.module}/${var.metadata_startup_script}")}
+  SCRIPT
 
   service_account {
-    email  = var.bastion_host_email
+    email  = var.service_account_email
     scopes = var.scopes
   }
 }

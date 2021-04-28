@@ -11,9 +11,8 @@
 
 
 module "compute_engine" {
-  source             = "./compute_engine"
-  project            = var.project
-  subnetwork_id      = module.networking.subnetwork
-  bastion_host_email = module.service_accounts.service-account-bastion-host-email
-  depends_on         = [module.api-enable-services]
+  source                = "./compute_engine"
+  project               = var.project
+  subnetwork_id         = var.subnetwork
+  service_account_email = var.service_account_email
 }

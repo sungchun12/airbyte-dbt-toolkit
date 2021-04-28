@@ -6,13 +6,13 @@
 variable "credentials" {
   description = "path to service account json file"
   type        = string
-  default     = "service_account.json"
+  default     = "../service_account.json"
 }
 
 variable "project" {
   description = "name of your GCP project"
   type        = string
-  default     = "airflow-demo-build"
+  default     = "dbt-demos-sung"
 }
 
 variable "location" {
@@ -21,16 +21,22 @@ variable "location" {
   default     = "us-central1"
 }
 
+variable "subnetwork" {
+  description = "default location of VPC subnet"
+  type        = string
+  default     = "projects/dbt-demos-sung/regions/us-central1/subnetworks/default"
+}
+
 variable "zone" {
   description = "default granular location typically for VMs"
   type        = string
-  default     = "us-central1-b"
+  default     = "us-central1-a"
 }
 
 variable "service_account_email" {
   description = "Service account used for VMs"
   type        = string
-  default     = "airflow-test@airflow-demo-build.iam.gserviceaccount.com"
+  default     = "packer@dbt-demos-sung.iam.gserviceaccount.com"
 }
 
 variable "version_label" {

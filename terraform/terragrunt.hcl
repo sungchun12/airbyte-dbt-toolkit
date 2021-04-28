@@ -27,10 +27,10 @@ remote_state {
     if_exists = "overwrite"
   }
   config = {
-    project     = "airflow-demo-build"
+    project     = "dbt-demos-sung"
     location    = "US"
-    credentials = "service_account.json"
-    bucket      = "airflow-demo-build-secure-bucket-tfstate-composer"
+    credentials = "../service_account.json"
+    bucket      = "airbyte-dbt-toolkit-tfstate"
     prefix      = "dev"
   }
 }
@@ -69,14 +69,14 @@ terraform {
   required_providers {
     google = {
       source = "hashicorp/google"
-      version = "~> 3.34.0"
+      version = "~> 3.65.0"
     }
     google-beta = {
       source = "hashicorp/google-beta"
-      version = "~> 3.34.0"
+      version = "~> 3.65.0"
     }
   }
-  required_version = ">= 0.13"
+  required_version = ">= 0.15"
 }
 EOF
 }

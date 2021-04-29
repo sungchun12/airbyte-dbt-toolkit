@@ -28,37 +28,7 @@ output "compute_engine_nat_ip" {
   value       = module.compute_engine.compute_engine_nat_ip
 }
 
-# output "network" {
-#   description = "The exact id for the vpc network"
-#   value       = module.networking.network
-# }
-
-# output "subnetwork" {
-#   description = "The exact id for the vpc subnetwork"
-#   value       = module.networking.subnetwork
-# }
-
-# output "cluster_secondary_range_name" {
-#   description = "The exact id for the cluster/pods secondary range name"
-#   value       = module.networking.cluster_secondary_range_name
-# }
-
-# output "services_secondary_range_name" {
-#   description = "The exact id for the services secondary range name"
-#   value       = module.networking.services_secondary_range_name
-# }
-
-# output "service-account-bastion-host-email" {
-#   description = "The email for the bastion host service account"
-#   value       = module.service_accounts.service-account-bastion-host-email
-# }
-
-# output "composer-worker-iam-member" {
-#   description = "id of the the composer worker iam member"
-#   value       = module.service_accounts.composer-worker-iam-member
-# }
-
-# output "composer-worker-service-account" {
-#   description = "name of the the composer worker service account"
-#   value       = module.service_accounts.composer-worker-service-account
-# }
+output "service-account-dbt-email" {
+  description = "The email for the bastion host service account"
+  value       = module.service_accounts.service-account-dbt-email
+}

@@ -16,3 +16,8 @@ module "compute_engine" {
   subnetwork_id         = var.subnetwork
   service_account_email = var.service_account_email
 }
+
+module "service_accounts" {
+  source  = "./service_accounts"
+  project = var.project
+}

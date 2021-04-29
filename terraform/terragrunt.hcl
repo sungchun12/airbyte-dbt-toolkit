@@ -1,10 +1,10 @@
 terraform {
-  extra_arguments "common_vars" {
-    commands = ["plan", "apply"]
-    arguments = [
-      "-var-file=common.tfvars",
-    ]
-  }
+  // extra_arguments "common_vars" {
+  //   commands = ["plan", "apply"]
+  //   arguments = [
+  //     "-var-file=common.tfvars",
+  //   ]
+  // }
 
   before_hook "before_hook" {
     commands = ["apply", "plan"]
@@ -12,8 +12,8 @@ terraform {
   }
 
   after_hook "after_hook" {
-    commands     = ["apply", "plan"]
-    execute      = ["echo", "Finished running Terraform"]
+    commands     = ["apply"]
+    execute      = ["bash", "airbyte_local_browser.sh"]
     run_on_error = true
   }
 }

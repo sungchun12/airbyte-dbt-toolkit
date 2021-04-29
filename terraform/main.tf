@@ -21,3 +21,8 @@ module "service_accounts" {
   source  = "./service_accounts"
   project = var.project
 }
+
+module "bigquery" {
+  source  = "./bigquery"
+  project = var.project
+}

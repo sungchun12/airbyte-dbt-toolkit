@@ -67,3 +67,19 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
 	assert.Equal(t, expected_compute_engine_id, output) //TODO: change to contain assert
 }
+
+//TODO: test if the service account terraform output matches the expected email
+
+//TODO: test if the bigquery dataset id matches an expected id
+
+//TODO: test that I can NOT access my compute instance from the public internet by simply hitting the URL from my browser
+
+//TODO: test that I can ssh into the instance
+
+//?: do I need to add init and apply for each test or can I only do it once?
+// https://github.com/gruntwork-io/terratest/blob/master/test/terraform_ssh_example_test.go
+// looks like there's a main handler function that calls upon other functions in parallel to avoid doing a terraform init and apply mutiple times in a row
+
+//TODO: add ability to do this:  (e.g., skip stage "teardown" by setting the environment variable "SKIP_teardown=true")
+
+//? Should I house all my tests in one file or make a dedicated directory?

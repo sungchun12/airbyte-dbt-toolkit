@@ -10,13 +10,4 @@ resource "google_bigquery_dataset" "airbyte-dataset" {
     env = "dev"
   }
 
-  #   access {
-  #     role          = "OWNER"
-  #     user_by_email = google_service_account.bqowner.email
-  #   }
-
 }
-
-# resource "google_service_account" "bqowner" {
-#   account_id = "bqowner"
-# }

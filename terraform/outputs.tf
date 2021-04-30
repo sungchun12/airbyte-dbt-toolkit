@@ -32,3 +32,8 @@ output "service-account-dbt-email" {
   description = "The email for the bastion host service account"
   value       = module.service_accounts.service-account-dbt-email
 }
+
+output "airbyte_dataset_id" {
+  description = "The email for the bastion host service account"
+  value       = module.bigquery.airbyte_dataset_id
+}

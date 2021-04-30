@@ -1,13 +1,11 @@
 resource "google_bigquery_dataset" "airbyte-dataset" {
   project                     = var.project
-  dataset_id                  = "airbyte_dataset"
-  friendly_name               = "airbyte_dataset"
-  description                 = "This is the main dataset for airbyte to point for EL destinations"
-  location                    = "US"
-  default_table_expiration_ms = null
+  dataset_id                  = var.airbyte_dataset_id
+  friendly_name               = var.airbyte_dataset_friendly_name
+  description                 = var.airbyte_dataset_description
+  location                    = var.airbyte_dataset_location
+  default_table_expiration_ms = var.airbyte_dataset_table_expiration
 
-  labels = {
-    env = "dev"
-  }
+  labels = var.airbyte_dataset_labels
 
 }

@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# setup env vars
-YOUR_GCP_PROJECT="dbt-demos-sung"
-INSTANCE_NAME="airbyte-demo"
-YOUR_GCP_ZONE="us-central1-a"
+# call on env vars
+source config.sh
 
 # create ssh tunnel to run airbyte webserver in the local browser
 gcloud beta compute ssh $INSTANCE_NAME \

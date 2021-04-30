@@ -33,6 +33,11 @@ output "service-account-dbt-email" {
   value       = module.service_accounts.service-account-dbt-email
 }
 
+output "dbt-iam-permissions-list" {
+  description = "The list of dbt iam permissions"
+  value       = module.service_accounts.dbt-iam-permissions-list
+}
+
 output "airbyte_dataset_id" {
   description = "The email for the bastion host service account"
   value       = module.bigquery.airbyte_dataset_id

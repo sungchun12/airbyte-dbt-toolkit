@@ -33,7 +33,7 @@ cd test/
 go test -v
 
 # run airbyte webserver in your local browser through an ssh tunnel into the airbyte virtual machine
-source airbyte_local_browser.sh
+source ../airbyte_local_browser.sh
 
 open http://localhost:8000/
 

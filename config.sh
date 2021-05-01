@@ -9,3 +9,4 @@ export GOOGLE_APPLICATION_CREDENTIALS="../service_account.json"
 
 # terratest configs
 export SKIP_teardown=true
+export SKIP_cleanup_image=true

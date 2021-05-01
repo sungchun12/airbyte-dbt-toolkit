@@ -1,4 +1,4 @@
-module example.com/m
+module airbyte_demo.com/m
 
 go 1.16
 

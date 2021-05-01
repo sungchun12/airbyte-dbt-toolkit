@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# call on env vars
-source ../config.sh
-
 # create ssh tunnel to run airbyte webserver in the local browser
 gcloud beta compute ssh $INSTANCE_NAME \
 --project=$YOUR_GCP_PROJECT \

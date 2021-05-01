@@ -68,6 +68,8 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 	assert.Equal(t, expected_compute_engine_id, output)
 }
 
+//? Should I have different capitalized test functions. Need to see other examples
+
 //TODO: test if the service account terraform output matches the expected email
 
 //TODO: test if the bigquery dataset id matches an expected id

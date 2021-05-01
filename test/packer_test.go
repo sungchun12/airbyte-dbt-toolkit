@@ -24,7 +24,7 @@ const DefaultMaxPackerRetries = 3
 // The test is broken into "stages" so you can skip stages by setting environment variables (e.g.,
 // skip stage "build_image" by setting the environment variable "SKIP_build_image=true"), which speeds up iteration when
 // running this test over and over again locally.
-func TestPackerAirbyte(t *testing.T) {
+func TestPackerAirbyteDemo(t *testing.T) {
 	t.Parallel()
 
 	// The folder where we have our packer code

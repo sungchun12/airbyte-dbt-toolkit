@@ -47,3 +47,6 @@ service_account.json
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# terratest files
+**/.test-data/

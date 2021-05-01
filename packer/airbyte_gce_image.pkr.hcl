@@ -1,8 +1,18 @@
+variable "gcp_project_id" {
+  type =  string
+  default = "dbt-demos-sung"
+}
+
+variable "gcp_zone" {
+  type =  string
+  default = "us-central1-a"
+}
+
 source "googlecompute" "airbyte-example" {
-  project_id = "dbt-demos-sung"
+  project_id = var.gcp_project_id
   source_image = "debian-10-buster-v20210420"
   ssh_username = "packer"
-  zone = "us-central1-a"
+  zone = var.gcp_zone
 }
 
 build {

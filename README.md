@@ -13,16 +13,19 @@ source config.sh
 
 ```
 
-## Test terraform deployment
+## Deploy and test terraform and packer resources
+
+> Estimated time to complete: 5 minutes
+
+TODO: add a table of resources deployed and why
 
 ```bash
 
-# change into terraform directory
-cd terraform/
+# change into test directory
+cd test/
 
 # skips tearing down resources by default
-# to tear down resources after testing run: `unset SKIP_teardown`
-
+# to tear down resources after testing run: `unset SKIP_teardown SKIP_cleanup_image`
 # expected terminal output:
 # --- PASS: TestTerraformAirbyteDemo (53.76s)
 # PASS

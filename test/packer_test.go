@@ -51,6 +51,7 @@ func buildImage(t *testing.T, projectID string, workingDir string) {
 	// Pick a random GCP zone to test in. This helps ensure your code works in all regions.
 	// On October 22, 2018, GCP launched the asia-east2 region, which promptly failed all our tests, so blacklist asia-east2.
 	zone := gcp.GetRandomZone(t, projectID, nil, nil, []string{"asia-east2"})
+	airbyte_build_script := workingDir + "airbyte_build.sh"
 
 	packerOptions := &packer.Options{
 		// The path to where the Packer template is located
@@ -58,8 +59,9 @@ func buildImage(t *testing.T, projectID string, workingDir string) {
 
 		// Variables to pass to our Packer build using -var options
 		Vars: map[string]string{
-			"gcp_project_id": projectID,
-			"gcp_zone":       zone,
+			"gcp_project_id":       projectID,
+			"gcp_zone":             zone,
+			"airbyte_build_script": airbyte_build_script,
 		},
 
 		// Configure retries for intermittent errors

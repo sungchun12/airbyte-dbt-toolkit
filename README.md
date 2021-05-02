@@ -55,7 +55,7 @@ curl -LsS https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/mas
 gruntwork-install --binary-name 'terratest_log_parser' --repo 'https://github.com/gruntwork-io/terratest' --tag 'v0.13.13'
 
 
-# run test with parsed logs
+# run tests and then parse logs for human readability
 go test -timeout 30m | tee test_output.log
 terratest_log_parser -testlog test_output.log -outputdir test_output
 

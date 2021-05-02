@@ -50,3 +50,5 @@ service_account.json
 
 # terratest files
 **/.test-data/
+**/test_output/
+test_output.log

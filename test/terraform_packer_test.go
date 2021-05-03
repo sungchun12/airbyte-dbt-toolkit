@@ -88,24 +88,6 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 
 }
 
-//TODO: test if the service account created has at least the two bigquery roles in scope
-//? does this function ahve to be lowercase for it to be called by another function?
-func testServiceAccountRoles(t *testing.T, terraformOptions *terraform.Options) {
-
-	expected_permissions_list := string("[roles/bigquery.dataEditor roles/bigquery.user]")
-
-	output := terraform.Output(t, terraformOptions, "dbt-iam-permissions-list")
-	assert.Equal(t, expected_permissions_list, output) //TODO: change to contain assert
-}
-
-func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
-
-	expected_compute_engine_id := "projects/dbt-demos-sung/zones/us-central1-a/instances/airbyte-demo" //TODO: change to dynamic based on env vars
-
-	output := terraform.Output(t, terraformOptions, "compute_engine_id")
-	assert.Equal(t, expected_compute_engine_id, output)
-}
-
 // Build the Packer Image
 func buildImage(t *testing.T, projectID string, workingPackerDir string) {
 
@@ -146,6 +128,22 @@ func deleteImage(t *testing.T, projectID string, imageName string) {
 	// Load the Image ID saved by the earlier build_image stage
 	image := gcp.FetchImage(t, projectID, imageName)
 	image.DeleteImage(t)
+}
+
+func testServiceAccountRoles(t *testing.T, terraformOptions *terraform.Options) {
+
+	expected_permissions_list := string("[roles/bigquery.dataEditor roles/bigquery.user]")
+
+	output := terraform.Output(t, terraformOptions, "dbt-iam-permissions-list")
+	assert.Equal(t, expected_permissions_list, output) //TODO: change to contain assert
+}
+
+func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
+
+	expected_compute_engine_id := "projects/dbt-demos-sung/zones/us-central1-a/instances/airbyte-demo" //TODO: change to dynamic based on env vars
+
+	output := terraform.Output(t, terraformOptions, "compute_engine_id")
+	assert.Equal(t, expected_compute_engine_id, output)
 }
 
 //TODO: test if the service account terraform output matches the expected email

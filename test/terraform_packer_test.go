@@ -84,6 +84,7 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 
 		testServiceAccountRoles(t, terraformOptions)
 		testComputeEngineId(t, terraformOptions)
+		testBigQueryDatasetId(t, terraformOptions)
 	})
 
 }
@@ -146,9 +147,15 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 	assert.Equal(t, expected_compute_engine_id, output)
 }
 
-//TODO: test if the service account terraform output matches the expected email
+func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {
 
-//TODO: test if the bigquery dataset id matches an expected id
+	expected_airbyte_dataset_id := "projects/dbt-demos-sung/datasets/airbyte_dataset" //TODO: change to dynamic based on env vars
+
+	output := terraform.Output(t, terraformOptions, "airbyte_dataset_id")
+	assert.Equal(t, expected_airbyte_dataset_id, output)
+}
+
+//TODO: test if the service account terraform output matches the expected email
 
 //TODO: test that I can NOT access my compute instance from the public internet by simply hitting the URL from my browser
 

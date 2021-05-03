@@ -68,7 +68,8 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 	assert.Equal(t, expected_compute_engine_id, output)
 }
 
-//? Should I have different capitalized test functions. Need to see other examples
+// TODO: deploy dynamic packer build with terraform test above-follow the example:
+// https://github.com/gruntwork-io/terratest/blob/master/test/terraform_packer_example_test.go
 
 //TODO: test if the service account terraform output matches the expected email
 

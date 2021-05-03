@@ -39,11 +39,6 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 	// Get the Project Id to use
 	projectID := gcp.GetGoogleProjectIDFromEnvVar(t)
 
-	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		// Set the path to the Terraform code that will be tested.
-		TerraformDir: workingTerraformDir,
-	})
-
 	// At the end of the test, delete the Image
 	defer test_structure.RunTestStage(t, "cleanup_image", func() {
 		imageName := test_structure.LoadString(t, workingPackerDir, "imageName")
@@ -59,6 +54,16 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 	// Build the Image for the web app
 	test_structure.RunTestStage(t, "build_image", func() {
 		buildImage(t, projectID, workingPackerDir)
+	})
+
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		// Set the path to the Terraform code that will be tested.
+		TerraformDir: workingTerraformDir,
+
+		// Variables to pass to our Terraform code using -var options
+		Vars: map[string]interface{}{
+			"image": test_structure.LoadString(t, workingPackerDir, "imageName"),
+		},
 	})
 
 	// Deploy the terraform infrastructure
@@ -100,9 +105,6 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
 	assert.Equal(t, expected_compute_engine_id, output)
 }
-
-// TODO: deploy dynamic packer build with terraform test above-follow the example:
-// https://github.com/gruntwork-io/terratest/blob/master/test/terraform_packer_example_test.go
 
 // Build the Packer Image
 func buildImage(t *testing.T, projectID string, workingPackerDir string) {

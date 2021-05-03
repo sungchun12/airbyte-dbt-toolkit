@@ -44,3 +44,9 @@ variable "version_label" {
   type        = string
   default     = "demo"
 }
+
+variable "image" {
+  description = "OS image for compute engine instance"
+  type        = string
+  default     = null
+}

@@ -49,7 +49,7 @@ variable "tags" {
 variable "image" {
   description = "OS image for compute engine instance"
   type        = string
-  default     = "packer-1619640073"
+  default     = null
 }
 
 

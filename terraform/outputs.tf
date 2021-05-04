@@ -23,9 +23,9 @@ output "compute_engine_id" {
   value       = module.compute_engine.compute_engine_id
 }
 
-output "compute_engine_nat_ip" {
+output "compute_engine_public_ip" {
   description = "The external IP of the compute engine instance"
-  value       = module.compute_engine.compute_engine_nat_ip
+  value       = module.compute_engine.compute_engine_public_ip
 }
 
 output "service-account-dbt-email" {

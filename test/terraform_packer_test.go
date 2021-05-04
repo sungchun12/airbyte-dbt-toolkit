@@ -1,11 +1,15 @@
 package test
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/gruntwork-io/terratest/modules/gcp"
 	"github.com/gruntwork-io/terratest/modules/packer"
+	"github.com/gruntwork-io/terratest/modules/retry"
+	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
@@ -165,6 +169,66 @@ func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Option
 	assert.Equal(t, expected_service_account_email, output)
 }
 
-//TODO: test that I can NOT access my compute instance from the public internet by simply hitting the URL from my browser
-
 //TODO: test that I can ssh into the instance
+func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, projectID string) {
+	// TODO generate a ssh key pair
+	keyPair := ssh.GenerateRSAKeyPair(t, 2048)
+
+	// Run `terraform output` to get the value of an output variable
+	publicInstanceIP := terraform.Output(t, terraformOptions, "compute_engine_public_ip")
+
+	// TODO add the public ssh key to the compute engine metadata
+
+	// We're going to try to SSH to the instance IP, using the Key Pair we created earlier, and the user "terratest",
+	// as we know the Instance is running an Ubuntu AMI that has such a user
+	publicHost := ssh.Host{
+		Hostname:    publicInstanceIP,
+		SshKeyPair:  keyPair,
+		SshUserName: "terratest",
+	}
+
+	// It can take a minute or so for the Instance to boot up, so retry a few times
+	maxRetries := 30
+	timeBetweenRetries := 5 * time.Second
+	description := fmt.Sprintf("SSH to public host %s", publicInstanceIP)
+
+	// Run a simple echo command on the server
+	expectedText := "Hello, World"
+	command := fmt.Sprintf("echo -n '%s'", expectedText)
+
+	// Verify that we can SSH to the Instance and run commands
+	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
+		actualText, err := ssh.CheckSshCommandE(t, publicHost, command)
+
+		if err != nil {
+			return "", err
+		}
+
+		if strings.TrimSpace(actualText) != expectedText {
+			return "", fmt.Errorf("Expected SSH command to return '%s' but got '%s'", expectedText, actualText)
+		}
+
+		return "", nil
+	})
+
+	// Run a command on the server that results in an error,
+	expectedText = "Hello, World"
+	command = fmt.Sprintf("echo -n '%s' && exit 1", expectedText)
+	description = fmt.Sprintf("SSH to public host %s with error command", publicInstanceIP)
+
+	// Verify that we can SSH to the Instance, run the command and see the output
+	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
+
+		actualText, err := ssh.CheckSshCommandE(t, publicHost, command)
+
+		if err == nil {
+			return "", fmt.Errorf("Expected SSH command to return an error but got none")
+		}
+
+		if strings.TrimSpace(actualText) != expectedText {
+			return "", fmt.Errorf("Expected SSH command to return '%s' but got '%s'", expectedText, actualText)
+		}
+
+		return "", nil
+	})
+}

@@ -48,5 +48,5 @@ variable "version_label" {
 variable "image" {
   description = "OS image for compute engine instance"
   type        = string
-  default     = null
+  default     = "packer-1620060033"
 }

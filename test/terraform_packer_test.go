@@ -196,7 +196,7 @@ func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, proj
 	}
 
 	// It can take a minute or so for the Instance to boot up, so retry a few times
-	maxRetries := 30
+	maxRetries := 10
 	timeBetweenRetries := 5 * time.Second
 	description := fmt.Sprintf("SSH to public host %s", publicInstanceIP)
 
@@ -210,27 +210,6 @@ func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, proj
 
 		if err != nil {
 			return "", err
-		}
-
-		if strings.TrimSpace(actualText) != expectedText {
-			return "", fmt.Errorf("Expected SSH command to return '%s' but got '%s'", expectedText, actualText)
-		}
-
-		return "", nil
-	})
-
-	// Run a command on the server that results in an error,
-	expectedText = "Hello, World"
-	command = fmt.Sprintf("echo -n '%s' && exit 1", expectedText)
-	description = fmt.Sprintf("SSH to public host %s with error command", publicInstanceIP)
-
-	// Verify that we can SSH to the Instance, run the command and see the output
-	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
-
-		actualText, err := ssh.CheckSshCommandE(t, publicHost, command)
-
-		if err == nil {
-			return "", fmt.Errorf("Expected SSH command to return an error but got none")
 		}
 
 		if strings.TrimSpace(actualText) != expectedText {

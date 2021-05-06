@@ -20,5 +20,3 @@ open http://localhost:8000/
 echo "***********************"
 echo "You should now see your airbyte webserver in your local browser!"
 echo "***********************"
-
-exit

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gruntwork-io/terratest/modules/gcp"
+	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/packer"
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/ssh"
@@ -143,6 +144,7 @@ func testServiceAccountRoles(t *testing.T, terraformOptions *terraform.Options) 
 
 	output := terraform.Output(t, terraformOptions, "dbt-iam-permissions-list")
 	assert.Equal(t, expected_permissions_list, output) //TODO: change to contain assert
+	logger.Log(t, "testServiceAccountRoles successfully passed")
 }
 
 func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
@@ -151,6 +153,7 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
 	assert.Equal(t, expected_compute_engine_id, output)
+	logger.Log(t, "testComputeEngineId successfully passed")
 }
 
 func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {
@@ -159,6 +162,7 @@ func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {
 
 	output := terraform.Output(t, terraformOptions, "airbyte_dataset_id")
 	assert.Equal(t, expected_airbyte_dataset_id, output)
+	logger.Log(t, "testBigQueryDatasetId successfully passed")
 }
 
 func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Options, projectID string) {
@@ -168,6 +172,7 @@ func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Option
 
 	output := terraform.Output(t, terraformOptions, "service-account-dbt-email")
 	assert.Equal(t, expected_service_account_email, output)
+	logger.Log(t, "testdbtServiceAccountEmail successfully passed")
 }
 
 // test that I can ssh into the airbyte demo instance instance
@@ -218,4 +223,5 @@ func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, proj
 
 		return "", nil
 	})
+	logger.Log(t, "testSSHToPublicHost successfully passed")
 }

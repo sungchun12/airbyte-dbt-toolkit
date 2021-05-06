@@ -59,6 +59,7 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 	// Build the Image for the web app
 	test_structure.RunTestStage(t, "build_image", func() {
 		buildImage(t, projectID, workingPackerDir)
+		logger.Log(t, "--- PASS: build_image")
 	})
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
@@ -144,7 +145,7 @@ func testServiceAccountRoles(t *testing.T, terraformOptions *terraform.Options) 
 
 	output := terraform.Output(t, terraformOptions, "dbt-iam-permissions-list")
 	assert.Equal(t, expected_permissions_list, output) //TODO: change to contain assert
-	logger.Log(t, "testServiceAccountRoles successfully passed")
+	logger.Log(t, "--- PASS: testServiceAccountRoles")
 }
 
 func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
@@ -153,7 +154,7 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
 	assert.Equal(t, expected_compute_engine_id, output)
-	logger.Log(t, "testComputeEngineId successfully passed")
+	logger.Log(t, "--- PASS: testComputeEngineId")
 }
 
 func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {
@@ -162,7 +163,7 @@ func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {
 
 	output := terraform.Output(t, terraformOptions, "airbyte_dataset_id")
 	assert.Equal(t, expected_airbyte_dataset_id, output)
-	logger.Log(t, "testBigQueryDatasetId successfully passed")
+	logger.Log(t, "--- PASS: testBigQueryDatasetId")
 }
 
 func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Options, projectID string) {
@@ -172,7 +173,7 @@ func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Option
 
 	output := terraform.Output(t, terraformOptions, "service-account-dbt-email")
 	assert.Equal(t, expected_service_account_email, output)
-	logger.Log(t, "testdbtServiceAccountEmail successfully passed")
+	logger.Log(t, "--- PASS: testdbtServiceAccountEmail")
 }
 
 // test that I can ssh into the airbyte demo instance instance
@@ -223,5 +224,5 @@ func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, proj
 
 		return "", nil
 	})
-	logger.Log(t, "testSSHToPublicHost successfully passed")
+	logger.Log(t, "--- PASS: testSSHToPublicHost")
 }

@@ -13,7 +13,7 @@ terraform {
 
   after_hook "after_hook" {
     commands     = ["apply"]
-    execute      = ["bash", "airbyte_local_browser.sh"]
+    execute      = ["bash", "../airbyte_local_browser.sh"]
     run_on_error = true
   }
 }

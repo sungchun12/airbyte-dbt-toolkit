@@ -90,6 +90,7 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 		testComputeEngineId(t, terraformOptions)
 		testBigQueryDatasetId(t, terraformOptions)
 		testdbtServiceAccountEmail(t, terraformOptions, projectID)
+		testSSHToPublicHost(t, terraformOptions, projectID)
 	})
 
 }
@@ -169,22 +170,29 @@ func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Option
 	assert.Equal(t, expected_service_account_email, output)
 }
 
-//TODO: test that I can ssh into the instance
+// test that I can ssh into the airbyte demo instance instance
 func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, projectID string) {
-	// TODO generate a ssh key pair
+	//get the GCP instance
+	instanceName := "airbyte-demo" //TODO
+	instance := gcp.FetchInstance(t, projectID, instanceName)
+
+	// generate a ssh key pair
 	keyPair := ssh.GenerateRSAKeyPair(t, 2048)
+
+	// add the public ssh key to the compute engine metadata
+	sshUsername := "terratest"
+	publicKey := keyPair.PublicKey
+	instance.AddSshKey(t, sshUsername, publicKey)
 
 	// Run `terraform output` to get the value of an output variable
 	publicInstanceIP := terraform.Output(t, terraformOptions, "compute_engine_public_ip")
-
-	// TODO add the public ssh key to the compute engine metadata
 
 	// We're going to try to SSH to the instance IP, using the Key Pair we created earlier, and the user "terratest",
 	// as we know the Instance is running an Ubuntu AMI that has such a user
 	publicHost := ssh.Host{
 		Hostname:    publicInstanceIP,
 		SshKeyPair:  keyPair,
-		SshUserName: "terratest",
+		SshUserName: sshUsername,
 	}
 
 	// It can take a minute or so for the Instance to boot up, so retry a few times

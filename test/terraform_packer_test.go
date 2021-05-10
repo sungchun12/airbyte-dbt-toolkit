@@ -50,6 +50,10 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 		deleteImage(t, projectID, imageName)
 	})
 
+	defer test_structure.RunTestStage(t, "cleanup_ssh_keys", func() {
+		deleteSshKey(t, projectID)
+	})
+
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer test_structure.RunTestStage(t, "teardown", func() {
 		terraformOptions := test_structure.LoadTerraformOptions(t, workingTerraformDir)
@@ -137,6 +141,28 @@ func deleteImage(t *testing.T, projectID string, imageName string) {
 	// Load the Image ID saved by the earlier build_image stage
 	image := gcp.FetchImage(t, projectID, imageName)
 	image.DeleteImage(t)
+}
+
+//TODO: understand how the code adds a ssh key to the gcp instance and do the opposite
+// the addsshkey function sets metadata using the SetMetadataE function
+// ? What if I overwrite the metadata ssh string with blanks?
+//! Goal: terraform apply is idempotent and will not want to overwrite the terratest ssh key as it shouldn't exist
+//! I can set it to nil(null)
+// Delete the terratest ssh key after running the test
+// should I defer after running all the tests? yes
+// should this be in a separate test stage? yes
+func deleteSshKey(t *testing.T, projectID string) {
+	//get the GCP instance
+	instanceName := "airbyte-demo" //TODO
+	instance := gcp.FetchInstance(t, projectID, instanceName)
+
+	// replace ssh key with null
+	metadata := map[string]string{
+		"ssh-keys": "",
+	}
+
+	instance.SetMetadata(t, metadata)
+	// logger.Log(t, "--- PASS: testComputeEngineId")
 }
 
 func testServiceAccountRoles(t *testing.T, terraformOptions *terraform.Options) {

@@ -176,7 +176,7 @@ func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Option
 	logger.Log(t, "--- PASS: testdbtServiceAccountEmail")
 }
 
-// test that I can ssh into the airbyte demo instance instance
+// test that I can ssh into the airbyte demo instance
 func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, projectID string) {
 	//get the GCP instance
 	instanceName := "airbyte-demo" //TODO

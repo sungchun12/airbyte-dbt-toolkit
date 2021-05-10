@@ -50,3 +50,9 @@ variable "image" {
   type        = string
   default     = "packer-1620060033"
 }
+
+variable "name" {
+  description = "compute engine instance name"
+  type        = string
+  default     = "airbyte-demo"
+}

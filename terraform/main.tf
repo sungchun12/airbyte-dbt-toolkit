@@ -13,6 +13,7 @@
 module "compute_engine" {
   source                = "./compute_engine"
   project               = var.project
+  name                  = var.name
   subnetwork_id         = var.subnetwork
   service_account_email = var.service_account_email
   image                 = var.image

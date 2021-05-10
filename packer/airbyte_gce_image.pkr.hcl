@@ -14,11 +14,20 @@ variable "airbyte_build_script" {
 }
 
 # debian hard coded as validated source image: https://docs.airbyte.io/deploying-airbyte/on-gcp-compute-engine
+variable "airbyte_source_image" {
+  type =  string
+  default = "debian-10-buster-v20210420"
+}
+
+variable "airbyte_ssh_username" {
+  type =  string
+  default = "packer"
+}
 
 source "googlecompute" "airbyte-example" {
   project_id = var.gcp_project_id
-  source_image = "debian-10-buster-v20210420"
-  ssh_username = "packer"
+  source_image = var.airbyte_source_image
+  ssh_username = var.airbyte_ssh_username
   zone = var.gcp_zone
 }
 

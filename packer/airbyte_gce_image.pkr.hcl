@@ -1,9 +1,9 @@
-variable "gcp_project_id" {
+variable "project" {
   type =  string
   default = "dbt-demos-sung"
 }
 
-variable "gcp_zone" {
+variable "zone" {
   type =  string
   default = "us-central1-a"
 }
@@ -25,10 +25,10 @@ variable "airbyte_ssh_username" {
 }
 
 source "googlecompute" "airbyte-example" {
-  project_id = var.gcp_project_id
+  project_id = var.project
   source_image = var.airbyte_source_image
   ssh_username = var.airbyte_ssh_username
-  zone = var.gcp_zone
+  zone = var.zone
 }
 
 build {

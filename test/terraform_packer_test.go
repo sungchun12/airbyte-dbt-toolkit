@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -41,13 +42,19 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 	// The folder where we have our packer code
 	workingPackerDir := "../packer/"
 
-	// Get the Project Id to use
-	projectID := gcp.GetGoogleProjectIDFromEnvVar(t)
+	// Get all the terraform variables to pass through
+	TF_VAR_credentials := os.Getenv("TF_VAR_credentials")
+	TF_VAR_project := os.Getenv("TF_VAR_project")
+	TF_VAR_location := os.Getenv("TF_VAR_location")
+	TF_VAR_subnetwork := os.Getenv("TF_VAR_subnetwork")
+	TF_VAR_zone := os.Getenv("TF_VAR_zone")
+	TF_VAR_service_account_email := os.Getenv("TF_VAR_service_account_email")
+	TF_VAR_version_label := os.Getenv("TF_VAR_version_label")
 
 	// At the end of the test, delete the Image
 	defer test_structure.RunTestStage(t, "cleanup_image", func() {
 		imageName := test_structure.LoadString(t, workingPackerDir, "imageName")
-		deleteImage(t, projectID, imageName)
+		deleteImage(t, TF_VAR_project, imageName)
 	})
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
@@ -58,7 +65,7 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 
 	// Build the Image for the web app
 	test_structure.RunTestStage(t, "build_image", func() {
-		buildImage(t, projectID, workingPackerDir)
+		buildImage(t, TF_VAR_project, workingPackerDir)
 		logger.Log(t, "--- PASS: build_image")
 	})
 
@@ -68,7 +75,14 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 
 		// Variables to pass to our Terraform code using -var options
 		Vars: map[string]interface{}{
-			"image": test_structure.LoadString(t, workingPackerDir, "imageName"),
+			"credentials":           TF_VAR_credentials,
+			"project":               TF_VAR_project,
+			"location":              TF_VAR_location,
+			"subnetwork":            TF_VAR_subnetwork,
+			"zone":                  TF_VAR_zone,
+			"service_account_email": TF_VAR_service_account_email,
+			"version_label":         TF_VAR_version_label,
+			"image":                 test_structure.LoadString(t, workingPackerDir, "imageName"),
 		},
 	})
 
@@ -91,8 +105,8 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 		testServiceAccountRoles(t, terraformOptions)
 		testComputeEngineId(t, terraformOptions)
 		testBigQueryDatasetId(t, terraformOptions)
-		testdbtServiceAccountEmail(t, terraformOptions, projectID)
-		testSSHToPublicHost(t, terraformOptions, projectID)
+		testdbtServiceAccountEmail(t, terraformOptions, TF_VAR_project)
+		testSSHToPublicHost(t, terraformOptions, TF_VAR_project)
 	})
 
 }

@@ -124,9 +124,10 @@ func buildImage(t *testing.T, projectID string, workingPackerDir string) {
 		Template: workingPackerDir + "airbyte_gce_image.pkr.hcl",
 
 		// Variables to pass to our Packer build using -var options
+		// TODO pass in packer env vars
 		Vars: map[string]string{
-			"gcp_project_id":       projectID,
-			"gcp_zone":             zone,
+			"project":              projectID,
+			"zone":                 zone,
 			"airbyte_build_script": airbyte_build_script,
 		},
 
@@ -164,7 +165,7 @@ func testServiceAccountRoles(t *testing.T, terraformOptions *terraform.Options) 
 
 func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 
-	expected_compute_engine_id := "projects/dbt-demos-sung/zones/us-central1-a/instances/airbyte-demo" //TODO: change to dynamic based on env vars
+	expected_compute_engine_id := "projects/dbt-demos-sung/zones/us-central1-a/instances/airbyte-demo-sung" //TODO: change to dynamic based on env vars
 
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
 	assert.Equal(t, expected_compute_engine_id, output)
@@ -193,7 +194,7 @@ func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Option
 // test that I can ssh into the airbyte demo instance
 func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, projectID string) {
 	//get the GCP instance
-	instanceName := "airbyte-demo" //TODO
+	instanceName := "airbyte-demo-sung" //TODO replace with env var
 	instance := gcp.FetchInstance(t, projectID, instanceName)
 
 	// generate a ssh key pair

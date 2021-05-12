@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# setup default Google Cloud credentials to run commands tied to your project
+export GOOGLE_APPLICATION_CREDENTIALS="../service_account.json"
+
 # setup terraform deployment environment variables
 # these variables will work consistently across terraform and terratest deployments
 # https://www.terraform.io/docs/cli/config/environment-variables.html

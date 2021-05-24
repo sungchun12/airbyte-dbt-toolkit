@@ -162,8 +162,11 @@ func testServiceAccountRoles(t *testing.T, terraformOptions *terraform.Options) 
 	expected_permissions_list := string("[roles/bigquery.dataEditor roles/bigquery.user]")
 
 	output := terraform.Output(t, terraformOptions, "dbt-iam-permissions-list")
-	assert.Equal(t, expected_permissions_list, output) //TODO: change to contain assert
-	logger.Log(t, "--- PASS: testServiceAccountRoles")
+	if assert.Equal(t, expected_permissions_list, output) == true {
+		logger.Log(t, emoji.Sprint("--- :check_mark_button: PASS: testServiceAccountRoles"))
+	} else {
+		logger.Log(t, emoji.Sprint("--- :cross_mark: FAIL: testServiceAccountRoles"))
+	}
 }
 
 func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
@@ -189,8 +192,11 @@ func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {
 	expected_airbyte_dataset_id := "projects/" + project + "/datasets/" + airbyte_dataset_id
 
 	output := terraform.Output(t, terraformOptions, "airbyte_dataset_id")
-	assert.Equal(t, expected_airbyte_dataset_id, output)
-	logger.Log(t, "--- PASS: testBigQueryDatasetId")
+	if assert.Equal(t, expected_airbyte_dataset_id, output) == true {
+		logger.Log(t, emoji.Sprint("--- :check_mark_button: PASS: testBigQueryDatasetId"))
+	} else {
+		logger.Log(t, emoji.Sprint("--- :cross_mark: FAIL: testBigQueryDatasetId"))
+	}
 }
 
 func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Options) {
@@ -199,8 +205,11 @@ func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Option
 	expected_service_account_email := "dbt-service-account" + "@" + project + iam_domain_name
 
 	output := terraform.Output(t, terraformOptions, "service-account-dbt-email")
-	assert.Equal(t, expected_service_account_email, output)
-	logger.Log(t, "--- PASS: testdbtServiceAccountEmail")
+	if assert.Equal(t, expected_service_account_email, output) == true {
+		logger.Log(t, emoji.Sprint("--- :check_mark_button: PASS: testdbtServiceAccountEmail"))
+	} else {
+		logger.Log(t, emoji.Sprint("--- :cross_mark: FAIL: testdbtServiceAccountEmail"))
+	}
 }
 
 // test that I can ssh into the airbyte demo instance
@@ -243,14 +252,16 @@ func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options) {
 		actualText, err := ssh.CheckSshCommandE(t, publicHost, command)
 
 		if err != nil {
+			logger.Log(t, emoji.Sprint("--- :cross_mark: FAIL: testSSHToPublicHost"))
 			return "", err
 		}
 
 		if strings.TrimSpace(actualText) != expectedText {
+			logger.Log(t, emoji.Sprint("--- :cross_mark: FAIL: testSSHToPublicHost"))
 			return "", fmt.Errorf("Expected SSH command to return '%s' but got '%s'", expectedText, actualText)
 		}
 
+		logger.Log(t, emoji.Sprint("--- :check_mark_button: PASS: testSSHToPublicHost"))
 		return "", nil
 	})
-	logger.Log(t, "--- PASS: testSSHToPublicHost")
 }

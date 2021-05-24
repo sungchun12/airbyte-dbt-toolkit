@@ -173,8 +173,12 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 	expected_compute_engine_id := "projects/" + project + "/zones/" + zone + "/instances/" + name
 
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
-	assert.Equal(t, expected_compute_engine_id, output)
-	logger.Log(t, "--- PASS: testComputeEngineId") // TODO: make this a conditional log
+	if assert.Equal(t, expected_compute_engine_id, output) == true {
+		logger.Log(t, "--- PASS: testComputeEngineId")
+	} else {
+		logger.Log(t, "--- FAIL: testComputeEngineId")
+	}
+
 }
 
 func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {

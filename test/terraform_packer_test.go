@@ -14,6 +14,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
+	"github.com/kyokomi/emoji/v2"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -174,9 +175,9 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
 	if assert.Equal(t, expected_compute_engine_id, output) == true {
-		logger.Log(t, "--- PASS: testComputeEngineId")
+		logger.Log(t, emoji.Sprint("--- :check_mark_button: PASS: testComputeEngineId"))
 	} else {
-		logger.Log(t, "--- FAIL: testComputeEngineId")
+		logger.Log(t, emoji.Sprint("--- :cross_mark: FAIL: testComputeEngineId"))
 	}
 
 }

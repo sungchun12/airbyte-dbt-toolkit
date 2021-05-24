@@ -117,21 +117,19 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 
 // Build the Packer Image
 func buildImage(t *testing.T, projectID string, workingPackerDir string) {
-
-	// Pick a random GCP zone to test in. This helps ensure your code works in all regions.
-	// On October 22, 2018, GCP launched the asia-east2 region, which promptly failed all our tests, so blacklist asia-east2.
-	zone := gcp.GetRandomZone(t, projectID, nil, nil, []string{"asia-east2"})
-	airbyte_build_script := workingPackerDir + "airbyte_build.sh"
+	// Variables to pass to our Packer build using -var options
+	PKR_VAR_project := os.Getenv("PKR_VAR_project")
+	PKR_VAR_zone := os.Getenv("PKR_VAR_zone")
+	PKR_VAR_airbyte_build_script := os.Getenv("PKR_VAR_airbyte_build_script")
+	airbyte_build_script := workingPackerDir + PKR_VAR_airbyte_build_script
 
 	packerOptions := &packer.Options{
 		// The path to where the Packer template is located
 		Template: workingPackerDir + "airbyte_gce_image.pkr.hcl",
 
-		// Variables to pass to our Packer build using -var options
-		// TODO pass in packer env vars
 		Vars: map[string]string{
-			"project":              projectID,
-			"zone":                 zone,
+			"project":              PKR_VAR_project,
+			"zone":                 PKR_VAR_zone,
 			"airbyte_build_script": airbyte_build_script,
 		},
 

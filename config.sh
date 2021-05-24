@@ -15,6 +15,7 @@ export TF_VAR_service_account_email="packer@dbt-demos-sung.iam.gserviceaccount.c
 export TF_VAR_version_label="demo"
 export TF_VAR_image="" # default to blank as terratest will dynamically create this variable
 export TF_VAR_name="airbyte-demo-sung"
+export TF_VAR_airbyte_dataset_id="airbyte_dataset"
 
 # setup packer variables to inherit terraform environment variables if applicable
 export PKR_VAR_project=$TF_VAR_project
@@ -25,5 +26,5 @@ export PKR_VAR_airbyte_ssh_username="packer"
 
 # terratest configs for faster, local testing
 export SKIP_teardown=true
-# export SKIP_build_image=true
+export SKIP_build_image=true
 export SKIP_cleanup_image=true

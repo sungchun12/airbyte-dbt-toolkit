@@ -56,3 +56,9 @@ variable "name" {
   type        = string
   default     = "airbyte-demo"
 }
+
+variable "airbyte_dataset_id" {
+  description = "Dataset ID for where airbyte will land the ingested data"
+  type        = string
+  default     = "airbyte_dataset"
+}

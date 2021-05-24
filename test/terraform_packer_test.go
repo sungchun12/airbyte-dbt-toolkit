@@ -51,6 +51,7 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 	TF_VAR_service_account_email := os.Getenv("TF_VAR_service_account_email")
 	TF_VAR_version_label := os.Getenv("TF_VAR_version_label")
 	TF_VAR_name := os.Getenv("TF_VAR_name")
+	TF_VAR_airbyte_dataset_id := os.Getenv("TF_VAR_airbyte_dataset_id")
 
 	// At the end of the test, delete the Image
 	defer test_structure.RunTestStage(t, "cleanup_image", func() {
@@ -84,6 +85,7 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 			"service_account_email": TF_VAR_service_account_email,
 			"version_label":         TF_VAR_version_label,
 			"name":                  TF_VAR_name,
+			"airbyte_dataset_id":    TF_VAR_airbyte_dataset_id,
 			"image":                 test_structure.LoadString(t, workingPackerDir, "imageName"),
 		},
 	})
@@ -178,8 +180,10 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 }
 
 func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {
-
-	expected_airbyte_dataset_id := "projects/dbt-demos-sung/datasets/airbyte_dataset" //TODO: change to dynamic based on env vars
+	// get all the vars from the terraformOptions
+	project := terraformOptions.Vars["project"].(string)
+	airbyte_dataset_id := terraformOptions.Vars["airbyte_dataset_id"].(string)
+	expected_airbyte_dataset_id := "projects/" + project + "/datasets/" + airbyte_dataset_id
 
 	output := terraform.Output(t, terraformOptions, "airbyte_dataset_id")
 	assert.Equal(t, expected_airbyte_dataset_id, output)

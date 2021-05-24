@@ -25,6 +25,7 @@ module "service_accounts" {
 }
 
 module "bigquery" {
-  source  = "./bigquery"
-  project = var.project
+  source             = "./bigquery"
+  project            = var.project
+  airbyte_dataset_id = var.airbyte_dataset_id
 }

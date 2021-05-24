@@ -176,7 +176,7 @@ func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
 
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
 	assert.Equal(t, expected_compute_engine_id, output)
-	logger.Log(t, "--- PASS: testComputeEngineId")
+	logger.Log(t, "--- PASS: testComputeEngineId") // TODO: make this a conditional log
 }
 
 func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {

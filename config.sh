@@ -28,3 +28,6 @@ export PKR_VAR_airbyte_ssh_username="packer"
 export SKIP_teardown=true
 export SKIP_build_image=true
 export SKIP_cleanup_image=true
+
+# unset SKIP env variables
+# unset SKIP_teardown SKIP_build_image SKIP_cleanup_image

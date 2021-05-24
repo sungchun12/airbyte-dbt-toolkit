@@ -50,6 +50,7 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 	TF_VAR_zone := os.Getenv("TF_VAR_zone")
 	TF_VAR_service_account_email := os.Getenv("TF_VAR_service_account_email")
 	TF_VAR_version_label := os.Getenv("TF_VAR_version_label")
+	TF_VAR_name := os.Getenv("TF_VAR_name")
 
 	// At the end of the test, delete the Image
 	defer test_structure.RunTestStage(t, "cleanup_image", func() {
@@ -82,6 +83,7 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 			"zone":                  TF_VAR_zone,
 			"service_account_email": TF_VAR_service_account_email,
 			"version_label":         TF_VAR_version_label,
+			"name":                  TF_VAR_name,
 			"image":                 test_structure.LoadString(t, workingPackerDir, "imageName"),
 		},
 	})
@@ -164,8 +166,11 @@ func testServiceAccountRoles(t *testing.T, terraformOptions *terraform.Options) 
 }
 
 func testComputeEngineId(t *testing.T, terraformOptions *terraform.Options) {
-
-	expected_compute_engine_id := "projects/dbt-demos-sung/zones/us-central1-a/instances/airbyte-demo-sung" //TODO: change to dynamic based on env vars
+	// get all the vars from the terraformOptions
+	project := terraformOptions.Vars["project"].(string)
+	zone := terraformOptions.Vars["zone"].(string)
+	name := terraformOptions.Vars["name"].(string)
+	expected_compute_engine_id := "projects/" + project + "/zones/" + zone + "/instances/" + name
 
 	output := terraform.Output(t, terraformOptions, "compute_engine_id")
 	assert.Equal(t, expected_compute_engine_id, output)

@@ -109,8 +109,8 @@ func TestTerraformAirbyteDemo(t *testing.T) {
 		testServiceAccountRoles(t, terraformOptions)
 		testComputeEngineId(t, terraformOptions)
 		testBigQueryDatasetId(t, terraformOptions)
-		testdbtServiceAccountEmail(t, terraformOptions, TF_VAR_project)
-		testSSHToPublicHost(t, terraformOptions, TF_VAR_project)
+		testdbtServiceAccountEmail(t, terraformOptions)
+		testSSHToPublicHost(t, terraformOptions)
 	})
 
 }
@@ -190,10 +190,10 @@ func testBigQueryDatasetId(t *testing.T, terraformOptions *terraform.Options) {
 	logger.Log(t, "--- PASS: testBigQueryDatasetId")
 }
 
-func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Options, projectID string) {
+func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Options) {
 	iam_domain_name := ".iam.gserviceaccount.com"
-
-	expected_service_account_email := "dbt-service-account" + "@" + projectID + iam_domain_name //TODO: change to dynamic based on env vars
+	project := terraformOptions.Vars["project"].(string)
+	expected_service_account_email := "dbt-service-account" + "@" + project + iam_domain_name
 
 	output := terraform.Output(t, terraformOptions, "service-account-dbt-email")
 	assert.Equal(t, expected_service_account_email, output)
@@ -201,10 +201,11 @@ func testdbtServiceAccountEmail(t *testing.T, terraformOptions *terraform.Option
 }
 
 // test that I can ssh into the airbyte demo instance
-func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options, projectID string) {
+func testSSHToPublicHost(t *testing.T, terraformOptions *terraform.Options) {
 	//get the GCP instance
-	instanceName := "airbyte-demo-sung" //TODO replace with env var
-	instance := gcp.FetchInstance(t, projectID, instanceName)
+	project := terraformOptions.Vars["project"].(string)
+	instanceName := terraformOptions.Vars["name"].(string)
+	instance := gcp.FetchInstance(t, project, instanceName)
 
 	// generate a ssh key pair
 	keyPair := ssh.GenerateRSAKeyPair(t, 2048)
